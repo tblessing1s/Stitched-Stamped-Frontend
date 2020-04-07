@@ -1,0 +1,43 @@
+
+<div [formGroup]="form">
+    <mat-form-field>
+      <mat-label>Item Name</mat-label>
+      <input matInput formControlName="itemName">
+    </mat-form-field>
+    <!--    Item = Input-->
+    <mat-form-field>
+      <mat-label>Monogram</mat-label>
+      <input matInput formControlName="monogram">
+    </mat-form-field>
+    <!--    Monogram = Input?-->
+    <h4>Select Font</h4>
+    <mat-form-field>
+      <mat-label>Pick Your Favorite Font</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let font of fontList" [value]="font">
+          {{font}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!--    Font = Select or Radio-->
+    <mat-form-field>
+      <mat-label>Thread Color</mat-label>
+      <input matInput formControlName="threadColor">
+    </mat-form-field>
+    <!--    Thread = Input?-->
+    <mat-label>Pick the Placement: </mat-label>
+    <mat-radio-group>
+      <mat-radio-button *ngFor="let placement of placementOptions" [value]="placement">
+        {{ placement }}
+      </mat-radio-button>
+    </mat-radio-group>
+    <!--    Placement = Radio?-->
+    <mat-form-field>
+      <mat-label>Design Notes</mat-label>
+      <textarea matInput formControlName="designNotes"></textarea>
+    </mat-form-field>
+    <!--    Design Notes = Input?-->
+  <div>
+    <button mat-raised-button color="primary" (click)="save()">Create Monogram</button>
+  </div>
+</div>

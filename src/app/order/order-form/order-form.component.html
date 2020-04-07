@@ -1,0 +1,26 @@
+<div *ngIf="!orderExist && !isNewCustomer">
+  <form>
+    <mat-form-field class="form">
+      <mat-label>Find Customer</mat-label>
+      <input matInput [formControl]="search" [matAutocomplete]="auto" placeholder="Phone Number or Name">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let customer of filteredOptions | async" [value]="customer">
+          {{customer.LastName}}, {{customer.FirstName}} : {{customer.Phone}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+  <button mat-raised-button color="primary" (click)="createOrder()">
+    Start Order
+  </button>
+  <button mat-button color="primary" class="create-client-button" (click)="isNewCustomer = true">
+    <mat-icon [inline]="true">add</mat-icon>
+    <span> Create Client</span>
+  </button>
+</div>
+<div *ngIf="!isNewCustomer && orderExist">
+  <app-monogram-item [order]="order"></app-monogram-item>
+</div>
+<div *ngIf="isNewCustomer">
+  <app-customer (isNewCustomer)="isNewCustomer = $event"></app-customer>
+</div>

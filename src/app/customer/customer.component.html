@@ -1,0 +1,31 @@
+
+<!--If Customer does not exist create one-->
+<div [formGroup]="form">
+  <h1 mat-dialog-title>Create New Customer</h1>
+  <mat-form-field class="form">
+    <mat-label>First Name</mat-label>
+    <input matInput formControlName="firstName">
+  </mat-form-field>
+  <mat-form-field class="form">
+    <mat-label>Last Name</mat-label>
+    <input matInput formControlName="lastName">
+  </mat-form-field>
+  <mat-form-field class="form">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email">
+  </mat-form-field>
+  <mat-form-field class="form">
+    <mat-label>Phone</mat-label>
+    <input matInput formControlName="phone" type="tel" [errorStateMatcher]="matcher">
+    <mat-error *ngIf="form.get('phone').hasError('pattern') && !form.get('phone').hasError('required')">
+      Please enter a valid phone number
+    </mat-error>
+    <mat-error *ngIf="form.get('phone').hasError('required')">
+      Phone Number is Required
+    </mat-error>
+  </mat-form-field>
+  <div>
+    <button mat-raised-button color="primary" (click)="save()">Create Customer</button>
+    <button mat-raised-button color="accent" (click)="isNewCustomer.emit(false)">Go Back</button>
+  </div>
+</div>
