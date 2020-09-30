@@ -17,4 +17,20 @@ export class HttpClientWrapperService {
   get<T>(url: string): Observable<T> {
     return this.http.get<T>(environment.backend.url + url);
   }
+
+  getHal<T>(url: string): Observable<T> {
+    return this.http.get<T>(url);
+  }
+
+  put<T>(body: T, url: string, id: number): Observable<T> {
+    return this.http.put<T>(environment.backend.url + url + `/${id}`, body);
+  }
+
+  patch<T>(body: T, url: string, id: number): Observable<T> {
+    return this.http.patch<T>(environment.backend.url + url + `/${id}`, body);
+  }
+
+  delete<T>(url: string, id: number) {
+    return this.http.delete<T>(environment.backend.url + url + `/${id}`);
+  }
 }

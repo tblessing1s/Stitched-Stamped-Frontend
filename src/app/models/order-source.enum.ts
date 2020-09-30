@@ -1,3 +1,3 @@
 export enum OrderSource {
-  InStore
+  InStore = 0
 }

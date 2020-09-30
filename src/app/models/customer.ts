@@ -1,7 +1,10 @@
 export class Customer {
-  Id: number;
-  FirstName: string;
-  LastName: string;
-  Email: string;
-  Phone: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+
+  public constructor(init?: Partial<Customer>) {
+    Object.assign(this, init);
+  }
 }

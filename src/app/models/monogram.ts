@@ -1,12 +1,12 @@
-import {Order} from './order';
-
 export class Monogram {
-  Id: number;
-  ItemName: string;
-  Font: string;
-  ThreadColor: string;
-  Placement: string;
-  Monogram: string;
-  DesignNotes: string;
-  Order: Order;
+  itemName: string;
+  font: string;
+  threadColor: string;
+  placement: string;
+  monogram: string;
+  designNotes: string;
+
+  public constructor(init?: Partial<Monogram>) {
+    Object.assign(this, init);
+  }
 }

@@ -7,7 +7,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class ItemService {
-  itemEndpoint = 'api/item';
+  itemEndpoint = '/monograms';
 
   constructor(private httpWrapper: HttpClientWrapperService) { }
 

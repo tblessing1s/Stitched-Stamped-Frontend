@@ -7,7 +7,7 @@ import {Order} from '../../models/order';
   providedIn: 'root'
 })
 export class OrderService {
-  orderEndpoint = 'api/order';
+  orderEndpoint = '/orders';
 
   constructor(private httpWrapper: HttpClientWrapperService) {
 
