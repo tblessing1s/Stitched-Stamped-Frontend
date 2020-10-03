@@ -1,18 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {OrderService} from '../services/order/order.service';
+import {PurchaseOrderService} from '../services/purchase-order/purchase-order.service';
 
 @Component({
   selector: 'app-order',
-  templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss']
+  templateUrl: './purchase-order.component.html',
+  styleUrls: ['./purchase-order.component.scss']
 })
-export class OrderComponent implements OnInit {
+export class PurchaseOrderComponent implements OnInit {
 
-  constructor(private orderService: OrderService) {
+  constructor(private orderService: PurchaseOrderService) {
   }
 
   ngOnInit() {
 
   }
 }
-// Then we will need a link to the details to the order
+// Then we will need a link to the details to the purchase-order

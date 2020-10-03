@@ -1,23 +1,24 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClientWrapperService} from '../../shared/http-client-wrapper/http-client-wrapper.service';
-import {Order} from '../../models/order';
+import {PurchaseOrder} from '../../models/purchase-order';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
-  orderEndpoint = '/orders';
+export class PurchaseOrderService {
+  orderEndpoint = 'purchase-orders';
 
   constructor(private httpWrapper: HttpClientWrapperService) {
 
   }
-
-  createNewOrder(order: Order): Observable<Order> {
-    return this.httpWrapper.post<Order>(order, this.orderEndpoint);
+  createNewOrder(order: PurchaseOrder): Observable<PurchaseOrder> {
+    if (!order.id) {
+      return this.httpWrapper.post<PurchaseOrder>(order, this.orderEndpoint);
+    } else {
+      return this.httpWrapper.patch<PurchaseOrder>(order, this.orderEndpoint, order.id);
+    }
   }
 
-  getOrders(): Observable<Order[]> {
-    return this.httpWrapper.get(this.orderEndpoint);
-  }
 }
+

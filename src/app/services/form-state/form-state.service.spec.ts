@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PurchaseOrderService } from './purchase-order.service';
+import { FormStateService } from './form-state.service';
 
-describe('OrderService', () => {
+describe('FormStateService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: PurchaseOrderService = TestBed.get(PurchaseOrderService);
+    const service: FormStateService = TestBed.get(FormStateService);
     expect(service).toBeTruthy();
   });
 });

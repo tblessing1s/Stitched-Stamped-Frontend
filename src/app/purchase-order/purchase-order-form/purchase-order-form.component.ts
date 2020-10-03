@@ -1,40 +1,60 @@
-import {Component, OnInit} from '@angular/core';
-import {Order} from '../../models/order';
-import {FormControl} from '@angular/forms';
-import {OrderService} from '../../services/order/order.service';
-import {MatDialogRef, MatSnackBar} from '@angular/material';
+import {Component, Input, OnInit} from '@angular/core';
+import {PurchaseOrder} from '../../models/purchase-order';
+import {AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators} from '@angular/forms';
+import {PurchaseOrderService} from '../../services/purchase-order/purchase-order.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {Customer} from '../../models/customer';
 import {CustomerService} from '../../services/customer/customer.service';
 import {map, startWith} from 'rxjs/operators';
-import {isNullOrUndefined} from 'util';
+import {CustomerComponent} from '../../customer/customer.component';
+import {FormStateService} from '../../services/form-state/form-state.service';
+import {OrderItemProperties} from '../../models/order-item-properties.enum';
+import {ErrorStateMatcher} from '@angular/material/core';
+import {MyErrorStateMatcher} from '../../shared/error-state-matcher/MyErrorStateMatcher';
 
+export function RequireMatch(control: AbstractControl) {
+  const selection: any = control.value;
+  if (typeof selection === 'string') {
+    return { incorrect: true };
+  }
+  return null;
+}
 @Component({
-  selector: 'app-order-form',
-  templateUrl: './order-form.component.html',
-  styleUrls: ['./order-form.component.scss']
+  selector: 'app-purchase-order-form',
+  templateUrl: './purchase-order-form.component.html',
+  styleUrls: ['./purchase-order-form.component.scss']
 })
-export class OrderFormComponent implements OnInit {
-  filteredOptions: Observable<Customer[]>;
-  search = new FormControl();
+export class PurchaseOrderFormComponent implements OnInit {
+  filteredOptions: Observable<any[]>;
+  searchForm: FormGroup;
   customer: Customer;
-  order = new Order();
-  orderExist = false;
+  purchaseOrder = new PurchaseOrder();
   isNewCustomer = false;
   customers: Customer[];
-  orders: Order[];
+  matcher = new MyErrorStateMatcher();
+  isCustomersEmpty = false;
+  @Input() orderSubmitted: boolean;
 
-  constructor(private orderService: OrderService,
+  constructor(private orderService: PurchaseOrderService,
               private customerService: CustomerService,
               private route: Router,
-              private dialogRef: MatDialogRef<OrderFormComponent>,
-              private snackBar: MatSnackBar
+              private snackBar: MatSnackBar,
+              private dialog: MatDialog,
+              private formStateService: FormStateService
   ) {
-    this.customerService.getCustomers().subscribe(result => this.customers = result);
+    this.searchForm = new FormGroup({
+      search: new FormControl('', [Validators.required, RequireMatch])
+    });
+
   }
 
   ngOnInit() {
+    this.customerService.getCustomers().subscribe(result => {
+      this.customers = result;
+    });
+
     this.filteredOptions = this.search.valueChanges
       .pipe(
         startWith(''),
@@ -43,39 +63,50 @@ export class OrderFormComponent implements OnInit {
       );
   }
 
+  get search() {
+    return this.searchForm.get('search');
+  }
+
   createOrder() {
-    this.orderService.createNewOrder(this.order).subscribe((result) => {
-        if (result !== isNullOrUndefined()) {
-          console.log(result);
-          this.order = result;
-          this.orderExist = true;
-          this.route.navigate(['/monogram']);
-        }
-      },
-      () => this.snackBar.open('Order did not save', 'Close'),
-      () => this.snackBar.open('Order did save', 'Close')
+
+    this.formStateService.getState().subscribe(state => {
+    });
+    this.orderService.createNewOrder(this.purchaseOrder).subscribe((result) => {
+      this.formStateService.update(result, OrderItemProperties.PURCHASEORDER);
+      this.purchaseOrder.id = result.id;
+      }
     );
-    this.dialogRef.close();
 
   }
 
+  openDialog() {
+    const dialogRef = this.dialog.open(CustomerComponent, {
+      width: '375px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.customer = result;
+      this.ngOnInit();
+    });
+  }
 
   displayFn(customer: Customer): string {
-    return customer ? `${customer.LastName}, ${customer.FirstName} | ${customer.Phone}` : '';
+    return customer ? `${customer.lastName}, ${customer.firstName} | ${customer.phone}` : '';
   }
 
   private setCustomer(customer: any) {
-    this.order.Customer = customer;
+    this.purchaseOrder.customer = customer._links.customer.href;
     return customer.name;
   }
 
   private _filter(name: string): Customer[] {
-    return this.customers.filter(customer => this._searchOn(customer, name));
+    const filter = this.customers.filter(customer => this._searchOn(customer, name));
+    this.isCustomersEmpty = filter.length < 1;
+    return filter;
   }
 
   private _searchOn(customer: Customer, nameLowerCase: string) {
-    return customer.Phone.indexOf(nameLowerCase) === 0 ||
-      (customer.FirstName.toLowerCase() + ' ' + customer.LastName.toLowerCase()).indexOf(nameLowerCase.toLowerCase()) === 0 ||
-      (customer.LastName.toLowerCase() + ' ' + customer.FirstName.toLowerCase()).indexOf(nameLowerCase.toLowerCase()) === 0;
+    return customer.phone.indexOf(nameLowerCase) === 0 ||
+      (customer.firstName.toLowerCase() + ' ' + customer.lastName.toLowerCase()).indexOf(nameLowerCase.toLowerCase()) === 0 ||
+      (customer.lastName.toLowerCase() + ' ' + customer.firstName.toLowerCase()).indexOf(nameLowerCase.toLowerCase()) === 0;
   }
 }

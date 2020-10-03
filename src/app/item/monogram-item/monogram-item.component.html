@@ -1,43 +1,132 @@
+<mat-expansion-panel [expanded]="this.saved">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Monogram
+    </mat-panel-title>
+    <mat-panel-description class="columns">
+      <div class="column is-6">
+        Item: <b>{{this.itemName.value ? this.itemName.value : 'No Item Entered'}}</b>, Monogram:
+        <b>{{this.displayMonogram()}}</b>
+      </div>
+      <div class="column is-offset-5">
+        <button mat-icon-button (click)="this.deleteMonogram(this.monogramToSave, this.monogramIndex)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-panel-description>
+    <ng-template matExpansionPanelContent>
+      <form [formGroup]="form">
+        <mat-grid-list cols="4" rowHeight="50px">
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <mat-form-field appearance="outline" style="width: 75%">
+              <mat-label>What item needs to be personalized?</mat-label>
+              <input matInput formControlName="itemName" [errorStateMatcher]="errorMatcher">
+              <mat-error *ngIf="this.itemName.hasError('required')">Item is required</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!--    Item = Input-->
 
-<div [formGroup]="form">
-    <mat-form-field>
-      <mat-label>Item Name</mat-label>
-      <input matInput formControlName="itemName">
-    </mat-form-field>
-    <!--    Item = Input-->
-    <mat-form-field>
-      <mat-label>Monogram</mat-label>
-      <input matInput formControlName="monogram">
-    </mat-form-field>
-    <!--    Monogram = Input?-->
-    <h4>Select Font</h4>
-    <mat-form-field>
-      <mat-label>Pick Your Favorite Font</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let font of fontList" [value]="font">
-          {{font}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!--    Font = Select or Radio-->
-    <mat-form-field>
-      <mat-label>Thread Color</mat-label>
-      <input matInput formControlName="threadColor">
-    </mat-form-field>
-    <!--    Thread = Input?-->
-    <mat-label>Pick the Placement: </mat-label>
-    <mat-radio-group>
-      <mat-radio-button *ngFor="let placement of placementOptions" [value]="placement">
-        {{ placement }}
-      </mat-radio-button>
-    </mat-radio-group>
-    <!--    Placement = Radio?-->
-    <mat-form-field>
-      <mat-label>Design Notes</mat-label>
-      <textarea matInput formControlName="designNotes"></textarea>
-    </mat-form-field>
-    <!--    Design Notes = Input?-->
-  <div>
-    <button mat-raised-button color="primary" (click)="save()">Create Monogram</button>
-  </div>
-</div>
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <label id="label">Monogram:</label>
+            <mat-radio-group formControlName="monogramOption"
+                             aria-labelledby="label"
+                             [ngStyle]="{'width.%': displayWidth(this.monogramOption, monogramType.THREELETTER,75,100)}">
+              <mat-radio-button *ngFor="let option of monogramOptions" [value]="option" style="margin-right: 5px"
+                                (change)="this.monogram.reset()">
+                {{option}}
+              </mat-radio-button>
+
+              <mat-form-field appearance="outline" style="width: 30%; margin-left: 5px"
+                              *ngIf="monogramOption.value === monogramType.THREELETTER">
+                <input matInput #threeLetter formControlName="monogram"
+                       (input)="displayInitials(threeLetter.value.toUpperCase().split(''))"
+                       [maxLength]="3" placeholder="e.g. CBL" [value]="threeLetter.value.toUpperCase()"
+                       [errorStateMatcher]="otherMonogramOptionMatcher">
+                <mat-error *ngIf="this.monogram.invalid && invalidOtherMonogramOption">Three Letter Monogram Needed
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" style="width: 30%"
+                              *ngIf="monogramOption.value === monogramType.FULLNAME">
+                <input matInput formControlName="monogram" placeholder="e.g. Christie Blessing"
+                       [errorStateMatcher]="otherMonogramOptionMatcher">
+                <mat-error *ngIf="this.monogram.invalid && invalidOtherMonogramOption">Full Name Is Needed</mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" style="width: 40%"
+                              *ngIf="monogramOption.value === monogramType.OTHER">
+                <input matInput formControlName="monogram" placeholder="Custom Monogram"
+                       [errorStateMatcher]="otherMonogramOptionMatcher">
+                <mat-error *ngIf="this.monogram.invalid && invalidOtherMonogramOption">Other Monogram Is Needed
+                </mat-error>
+              </mat-form-field>
+            </mat-radio-group>
+            <div style="display: flex; border: 1px black solid; border-radius: 5px"
+                 *ngIf="monogramOption.value === monogramType.THREELETTER && this.monogramValue">
+        <span style="padding: 5px 10px 5px 10px;" *ngFor="let initial of initials | keyvalue: asIsOrder">
+          <p style="text-decoration: underline black">{{initial.key}}</p><p
+          style="text-align: center">{{initial.value}}</p>
+        </span>
+            </div>
+          </mat-grid-tile>
+          <!--    Monogram = Input?-->
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <mat-form-field [ngStyle]="{'width.%': displayWidth(this.font, fontOption.OTHER, 35, 75)}"
+                            appearance="outline">
+              <mat-label>Select a Font</mat-label>
+              <mat-select formControlName="font" placeholder="Select a Font">
+                <mat-option *ngFor="let font of fontList" [value]="font">
+                  {{font}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" *ngIf="font.value === fontOption.OTHER"
+                            style="width: 50%; margin-left: 10px">
+              <input matInput formControlName="otherFont"
+                     [errorStateMatcher]="otherFontOptionMatcher" placeholder="e.g. Engraved">
+              <mat-error *ngIf="invalidOtherFontOption">Please provide a font</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!--    Font = Select or Radio-->
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <mat-form-field appearance="outline" style="width: 75%">
+              <mat-label>Enter a Thread Color</mat-label>
+              <input matInput formControlName="threadColor" placeholder="e.g. Blue" [errorStateMatcher]="errorMatcher">
+              <mat-error *ngIf="this.threadColor.hasError('required')">Thread Color is required</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!--    Thread = Input?-->
+          <mat-grid-tile [colspan]="4" [rowspan]="2">
+            <mat-label style="margin-right: 10px">Placement:</mat-label>
+            <div style="width: 100%">
+              <mat-radio-group formControlName="placement">
+                <mat-radio-button *ngFor="let placement of placementOptions" [value]="placement"
+                                  style="margin-right: 5px">
+                  {{ placement }}
+                </mat-radio-button>
+                <mat-form-field appearance="outline" *ngIf="placement.value === placementType.OTHER" style="width: 25%">
+                  <input matInput formControlName="otherPlacement" [errorStateMatcher]="otherOptionMatcher"
+                         placeholder="e.g. Right Chest">
+                  <mat-error *ngIf="invalidOtherOption">Please provide a placement</mat-error>
+                </mat-form-field>
+              </mat-radio-group>
+            </div>
+          </mat-grid-tile>
+          <!--    Placement = Radio?-->
+          <mat-grid-tile [colspan]="4" [rowspan]="2">
+            <mat-form-field appearance="outline" style="width: 75%; margin-top: 5px">
+              <mat-label>Design Notes</mat-label>
+              <textarea matInput formControlName="designNotes"></textarea>
+            </mat-form-field>
+
+          </mat-grid-tile>
+          <!--    Design Notes = Input?-->
+          <mat-grid-tile colspan="2">
+            <button mat-raised-button color="primary" (click)="save()"
+                    [disabled]="form.invalid || orderSubmitted">Create Monogram
+            </button>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </form>
+    </ng-template>
+  </mat-expansion-panel-header>
+</mat-expansion-panel>
+

@@ -1,26 +1,29 @@
-<div *ngIf="!orderExist && !isNewCustomer">
-  <form>
+<div *ngIf="!isNewCustomer">
+  <form [formGroup]="searchForm">
     <mat-form-field class="form">
       <mat-label>Find Customer</mat-label>
-      <input matInput [formControl]="search" [matAutocomplete]="auto" placeholder="Phone Number or Name">
+      <input matInput formControlName="search" [matAutocomplete]="auto" [errorStateMatcher]="matcher"
+             placeholder="Name or Phone Number">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
         <mat-option *ngFor="let customer of filteredOptions | async" [value]="customer">
-          {{customer.LastName}}, {{customer.FirstName}} : {{customer.Phone}}
+          {{customer.lastName}}, {{customer.firstName}} : {{customer.phone}}
+        </mat-option>
+        <mat-option *ngIf="isCustomersEmpty && search.dirty" [disabled]="true">
+          <i>Customer not found</i>
         </mat-option>
       </mat-autocomplete>
+      <mat-error *ngIf="searchForm.controls['search'].hasError('incorrect') || search.touched">Please Enter a Valid Name or Phone Number</mat-error>
     </mat-form-field>
+    <div>
+      <button mat-raised-button color="primary" (click)="createOrder()" [disabled]="searchForm.invalid || orderSubmitted"
+              matStepperNext>
+        Next
+      </button>
+      <button mat-button color="primary" class="create-client-button" (click)="openDialog()">
+        <mat-icon [inline]="true">add</mat-icon>
+        <span> Create Customer</span>
+      </button>
+    </div>
   </form>
-  <button mat-raised-button color="primary" (click)="createOrder()">
-    Start Order
-  </button>
-  <button mat-button color="primary" class="create-client-button" (click)="isNewCustomer = true">
-    <mat-icon [inline]="true">add</mat-icon>
-    <span> Create Client</span>
-  </button>
-</div>
-<div *ngIf="!isNewCustomer && orderExist">
-  <app-monogram-item [order]="order"></app-monogram-item>
-</div>
-<div *ngIf="isNewCustomer">
-  <app-customer (isNewCustomer)="isNewCustomer = $event"></app-customer>
+
 </div>

@@ -1,29 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import {Router, RouterModule, Routes} from '@angular/router';
-import {OrderComponent} from './order/order.component';
-import {DashboardComponent} from './dashboard/dashboard.component';
-import {OrderFormComponent} from './order/order-form/order-form.component';
-import {MonogramItemComponent} from './item/monogram-item/monogram-item.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {StepperComponent} from './stepper/stepper.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: DashboardComponent
-  },
-  {
-    path: 'orders',
-    component: OrderComponent
-  },
-  {
-    path: 'new-order-form',
-    component: OrderFormComponent
-  },
-  {
-    path: 'monogram',
-    component: MonogramItemComponent
+    path: 'create-new-order',
+    component: StepperComponent
   }
-
 ];
 
 @NgModule({

@@ -1,0 +1,34 @@
+<mat-card>
+  <mat-horizontal-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="step1.searchForm" [editable]="!orderSubmitted">
+      <form>
+        <ng-template matStepLabel>Customer Info</ng-template>
+        <app-purchase-order-form #step1 [orderSubmitted]="orderSubmitted"
+        >
+        </app-purchase-order-form>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="step2.form" [editable]="!orderSubmitted">
+      <ng-template matStepLabel>Item Customization</ng-template>
+      <app-item #step2 [orderSubmitted]="orderSubmitted">
+      </app-item>
+    </mat-step>
+    <mat-step>
+      <form>
+        <ng-template matStepLabel>Order Review</ng-template>
+        <app-order-confirmation *ngIf="(orderItem.purchaseOrder && orderItem.monogram) && (this.monogramList.length >= 1)"
+                                (orderSubmitted)="orderSubmitted = $event"
+        >
+        </app-order-confirmation>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-card>

@@ -1,0 +1,10 @@
+<h3>Please fill-out all information regarding the Customer's item</h3>
+<form [formGroup]="this.overallForm">
+  <div formArrayName="arrayForm" *ngFor="let monogramForm of arrayForm; let i = index">
+    <div [formGroupName]="i">
+      <app-monogram-item #monogramItemComponent (change)="this.form = monogramItemComponent.form" [monogramIndex]="i" (formIndexToRemove)="this.removeForm($event)" (isMonogramCreated)="this.isMonogramNotCreated = $event"></app-monogram-item>
+    </div>
+  </div>
+  <button mat-button (click)="this.addForm()" [disabled]="this.isMonogramNotCreated">Create New Monogram</button>
+  <button mat-raised-button color="primary" matStepperNext [disabled]="monogramList.length === 0 || this.isMonogramNotCreated">Review Order</button>
+</form>

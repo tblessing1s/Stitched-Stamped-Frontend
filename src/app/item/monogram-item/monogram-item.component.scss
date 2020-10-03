@@ -1,0 +1,16 @@
+::ng-deep mat-grid-tile .mat-figure {
+  justify-content: left !important;
+}
+
+b {
+  margin-left: 5px
+}
+
+mat-panel-title {
+  align-items: center;
+}
+
+.column {
+  display: flex;
+  align-items: center;
+}

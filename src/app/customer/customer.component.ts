@@ -1,19 +1,11 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Customer} from '../models/customer';
-import {FormControl, FormGroup, FormGroupDirective, NgForm, Validators} from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef, MatSnackBar} from '@angular/material';
 import {CustomerService} from '../services/customer/customer.service';
 import {Router} from '@angular/router';
 import {Validation} from '../shared/validators/validation';
-import {ErrorStateMatcher} from '@angular/material/core';
-import {OrderFormComponent} from '../order/order-form/order-form.component';
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+import {MyErrorStateMatcher} from '../shared/error-state-matcher/MyErrorStateMatcher';
 
 @Component({
   selector: 'app-customer',
@@ -32,8 +24,7 @@ export class CustomerComponent implements OnInit {
     private customerService: CustomerService,
     private snackBar: MatSnackBar,
     private route: Router,
-    private dialogRef: MatDialogRef<CustomerComponent>,
-    private orderFormComponent: OrderFormComponent
+    private dialogRef: MatDialogRef<CustomerComponent>
   ) {
   }
 
@@ -51,10 +42,10 @@ export class CustomerComponent implements OnInit {
   }
 
   save(): void {
-    this.customer.FirstName = this.form.get('firstName').value;
-    this.customer.LastName = this.form.get('lastName').value;
-    this.customer.Email = this.form.get('email').value;
-    this.customer.Phone = this.form.get('phone').value;
+    this.customer.firstName = this.form.get('firstName').value;
+    this.customer.lastName = this.form.get('lastName').value;
+    this.customer.email = this.form.get('email').value;
+    this.customer.phone = this.form.get('phone').value;
     this.customerService.createNewCustomer(this.customer).subscribe(
       result => {
         this.customer = result;
