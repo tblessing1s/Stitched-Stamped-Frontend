@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {StepperComponent} from './stepper/stepper.component';
+import {StepperComponent} from './create-new-order/stepper/stepper.component';
 
 const routes: Routes = [
   {

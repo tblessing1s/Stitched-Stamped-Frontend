@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Monogram} from '../models/monogram';
-import {FormStateService} from '../services/form-state/form-state.service';
-import {OrderItem} from '../models/order-item';
-import {Customer} from '../models/customer';
+import {Monogram} from '../../models/monogram';
+import {FormStateService} from '../../services/form-state/form-state.service';
+import {OrderItem} from '../../models/order-item';
+import {Customer} from '../../models/customer';
 
 @Component({
   selector: 'app-stepper',

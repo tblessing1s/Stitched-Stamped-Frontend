@@ -1,11 +1,11 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {PurchaseOrderFormComponent} from './purchase-order-form.component';
-import {AppModule} from '../../app.module';
-import {PurchaseOrderService} from '../../services/purchase-order/purchase-order.service';
-import {createStub} from '../../shared/spec-helper/provide-stub.spec-helper';
-import {CustomerService} from '../../services/customer/customer.service';
-import {buildCustomer, buildOrder} from '../../shared/spec-helper/object-builder';
+import {AppModule} from '../../../app.module';
+import {PurchaseOrderService} from '../../../services/purchase-order/purchase-order.service';
+import {createStub} from '../../../shared/spec-helper/provide-stub.spec-helper';
+import {CustomerService} from '../../../services/customer/customer.service';
+import {buildCustomer, buildOrder} from '../../../shared/spec-helper/object-builder';
 import {of} from 'rxjs';
 
 describe('OrderFormComponent', () => {

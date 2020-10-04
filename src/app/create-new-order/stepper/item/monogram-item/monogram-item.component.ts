@@ -1,17 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Monogram} from '../../models/monogram';
-import {MonogramService} from '../../services/item/monogram.service';
+import {Monogram} from '../../../../models/monogram';
+import {MonogramService} from '../../../../services/item/monogram.service';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators} from '@angular/forms';
-import {FormStateService} from '../../services/form-state/form-state.service';
-import {OrderItemProperties} from '../../models/order-item-properties.enum';
-import {FontList} from '../../models/font-list.enum';
-import {PlacementOptions} from '../../models/placement-options.enum';
+import {FormStateService} from '../../../../services/form-state/form-state.service';
+import {OrderItemProperties} from '../../../../models/order-item-properties.enum';
+import {FontList} from '../../../../models/font-list.enum';
+import {PlacementOptions} from '../../../../models/placement-options.enum';
 import {ErrorStateMatcher, MatDialog} from '@angular/material';
-import {MonogramOptions} from '../../models/monogram-options.enum';
-import {MonogramProperties} from '../../models/monogram-properties.enum';
-import {MyErrorStateMatcher} from '../../shared/error-state-matcher/MyErrorStateMatcher';
+import {MonogramOptions} from '../../../../models/monogram-options.enum';
+import {MonogramProperties} from '../../../../models/monogram-properties.enum';
+import {MyErrorStateMatcher} from '../../../../shared/error-state-matcher/MyErrorStateMatcher';
 import {tap} from 'rxjs/operators';
-import {WarningDialogComponent} from '../../shared/warning-dialog/warning-dialog.component';
+import {WarningDialogComponent} from '../../../../shared/warning-dialog/warning-dialog.component';
 
 export class InvalidOtherOptionValidatorMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

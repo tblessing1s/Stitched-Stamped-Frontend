@@ -1,15 +1,15 @@
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {Monogram} from '../models/monogram';
-import {Customer} from '../models/customer';
-import {CustomerService} from '../services/customer/customer.service';
-import {OrderItem} from '../models/order-item';
-import {OrderItemService} from '../services/order-item/order-item.service';
-import {MonogramService} from '../services/item/monogram.service';
-import {FormStateService} from '../services/form-state/form-state.service';
-import {PurchaseOrder} from '../models/purchase-order';
+import {Monogram} from '../../../models/monogram';
+import {Customer} from '../../../models/customer';
+import {CustomerService} from '../../../services/customer/customer.service';
+import {OrderItem} from '../../../models/order-item';
+import {OrderItemService} from '../../../services/order-item/order-item.service';
+import {MonogramService} from '../../../services/item/monogram.service';
+import {FormStateService} from '../../../services/form-state/form-state.service';
+import {PurchaseOrder} from '../../../models/purchase-order';
 import {MatTable, MatTableDataSource} from '@angular/material';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PurchaseOrderService} from '../services/purchase-order/purchase-order.service';
+import {PurchaseOrderService} from '../../../services/purchase-order/purchase-order.service';
 
 export interface Tile {
   field: string;

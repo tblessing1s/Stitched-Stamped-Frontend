@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {MonogramService} from '../services/item/monogram.service';
-import {FormStateService} from '../services/form-state/form-state.service';
+import {MonogramService} from '../../../services/item/monogram.service';
+import {FormStateService} from '../../../services/form-state/form-state.service';
 
 @Component({
   selector: 'app-item',

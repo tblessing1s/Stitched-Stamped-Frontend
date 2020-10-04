@@ -4,7 +4,6 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {RouterModule} from '@angular/router';
-import {PurchaseOrderComponent} from './purchase-order/purchase-order.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
     ErrorStateMatcher,
@@ -25,22 +24,21 @@ import {
     MatStepperModule, MatTableModule,
     ShowOnDirtyErrorStateMatcher
 } from '@angular/material';
-import {PurchaseOrderFormComponent} from './purchase-order/purchase-order-form/purchase-order-form.component';
+import {PurchaseOrderFormComponent} from './create-new-order/stepper/purchase-order-form/purchase-order-form.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpClientWrapperService} from './shared/http-client-wrapper/http-client-wrapper.service';
 import {HttpClientModule} from '@angular/common/http';
 import {CustomerComponent} from './customer/customer.component';
-import {MonogramItemComponent} from './item/monogram-item/monogram-item.component';
-import {StepperComponent} from './stepper/stepper.component';
-import {OrderConfirmationComponent} from './order-confirmation/order-confirmation.component';
+import {MonogramItemComponent} from './create-new-order/stepper/item/monogram-item/monogram-item.component';
+import {StepperComponent} from './create-new-order/stepper/stepper.component';
+import {OrderConfirmationComponent} from './create-new-order/stepper/order-confirmation/order-confirmation.component';
 import {CdkStepperModule} from '@angular/cdk/stepper';
-import { ItemComponent } from './item/item.component';
+import { ItemComponent } from './create-new-order/stepper/item/item.component';
 import { WarningDialogComponent } from './shared/warning-dialog/warning-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PurchaseOrderComponent,
     PurchaseOrderFormComponent,
     CustomerComponent,
     MonogramItemComponent,
@@ -51,7 +49,6 @@ import { WarningDialogComponent } from './shared/warning-dialog/warning-dialog.c
   ],
   entryComponents: [
     CustomerComponent,
-    PurchaseOrderComponent,
     OrderConfirmationComponent,
     WarningDialogComponent
   ],

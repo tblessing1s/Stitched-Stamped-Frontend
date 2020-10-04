@@ -1,18 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {PurchaseOrder} from '../../models/purchase-order';
+import {PurchaseOrder} from '../../../models/purchase-order';
 import {AbstractControl, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators} from '@angular/forms';
-import {PurchaseOrderService} from '../../services/purchase-order/purchase-order.service';
+import {PurchaseOrderService} from '../../../services/purchase-order/purchase-order.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
-import {Customer} from '../../models/customer';
-import {CustomerService} from '../../services/customer/customer.service';
+import {Customer} from '../../../models/customer';
+import {CustomerService} from '../../../services/customer/customer.service';
 import {map, startWith} from 'rxjs/operators';
-import {CustomerComponent} from '../../customer/customer.component';
-import {FormStateService} from '../../services/form-state/form-state.service';
-import {OrderItemProperties} from '../../models/order-item-properties.enum';
+import {CustomerComponent} from '../../../customer/customer.component';
+import {FormStateService} from '../../../services/form-state/form-state.service';
+import {OrderItemProperties} from '../../../models/order-item-properties.enum';
 import {ErrorStateMatcher} from '@angular/material/core';
-import {MyErrorStateMatcher} from '../../shared/error-state-matcher/MyErrorStateMatcher';
+import {MyErrorStateMatcher} from '../../../shared/error-state-matcher/MyErrorStateMatcher';
 
 export function RequireMatch(control: AbstractControl) {
   const selection: any = control.value;
