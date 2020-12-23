@@ -9,7 +9,7 @@
         <b>{{this.displayMonogram()}}</b>
       </div>
       <div class="column is-offset-5">
-        <button mat-icon-button (click)="this.deleteMonogram(this.monogramToSave, this.monogramIndex)">
+        <button mat-icon-button (click)="this.deleteMonogram(this.monogramToSave, this.monogramIndex, $event)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

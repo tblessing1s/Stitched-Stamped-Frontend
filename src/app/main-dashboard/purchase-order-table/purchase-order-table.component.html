@@ -1,0 +1,65 @@
+<mat-card>
+  <mat-table [dataSource]="datasource" multiTemplateDataRows>
+    <ng-container matColumnDef="purchaseOrderId">
+      <mat-header-cell *matHeaderCellDef> Purchase Order Id</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.purchaseOrderId}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="customer">
+      <mat-header-cell *matHeaderCellDef> Customer</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.customer}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orderCount">
+      <mat-header-cell *matHeaderCellDef> Order Count</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.orderCount}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="orderDate">
+      <mat-header-cell *matHeaderCellDef> Order Date</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.orderDate | date}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="menu">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row; let i = dataIndex">
+        <app-overflow-menu (click)="$event.stopPropagation()"
+                           [purchaseOrderId]="row.purchaseOrderId"
+                           (isOrderFinished)="updatePurchaseOrderStatus(row, i)"></app-overflow-menu>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="arrow">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row; let i = dataIndex" class="arrow-icon">
+        <mat-icon [@openClose]="row === expandedPurchaseOrder ? 'closed' : 'open'" class="pointer">keyboard_arrow_down
+        </mat-icon>
+      </mat-cell>
+    </ng-container>
+
+    <!--  Expanded column-->
+
+    <ng-container matColumnDef="expandedDetail">
+      <mat-cell *matCellDef="let row; let i = dataIndex" style="background-color: #E8E8E8; display: block">
+        <div>
+          <app-monogram-table *ngIf="this.expandedPurchaseOrder && (this.selectedIndex === i)"
+                              [expandedPurchaseOrder]="this.expandedPurchaseOrder.purchaseOrderId"
+                              style="width: 100%"
+          ></app-monogram-table>
+        </div>
+        <div>
+          <app-special-order-table *ngIf="this.expandedPurchaseOrder && (this.selectedIndex === i)"
+                                   [expandedPurchaseOrder]="this.expandedPurchaseOrder.purchaseOrderId"
+                                   style="width: 100%"
+          ></app-special-order-table>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayColumns; let i = dataIndex"
+             (click)="this.clickInformation(i, row)"
+    ></mat-row>
+    <mat-row *matRowDef="let row; columns: ['expandedDetail']"
+             [@detailExpand]="row === expandedPurchaseOrder ? 'expanded' : 'collapsed'"></mat-row>
+  </mat-table>
+</mat-card>

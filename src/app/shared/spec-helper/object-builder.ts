@@ -17,7 +17,8 @@ export function buildOrder(overrides: Partial<PurchaseOrder> = {}): PurchaseOrde
   const original: PurchaseOrder = {
     id: 1,
     customer: buildCustomer(),
-    orderSource: OrderSource.InStore
+    orderSource: OrderSource.InStore,
+    status: 'status',
   };
 
   return Object.assign(original, overrides);

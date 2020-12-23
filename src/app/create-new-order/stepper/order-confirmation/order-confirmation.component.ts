@@ -10,6 +10,15 @@ import {PurchaseOrder} from '../../../models/purchase-order';
 import {MatTable, MatTableDataSource} from '@angular/material';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PurchaseOrderService} from '../../../services/purchase-order/purchase-order.service';
+import {SpecialOrder} from '../../../models/special-order';
+import * as moment from 'moment';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import {DISPLAY_MONOGRAM_COLUMNS, DISPLAY_SPECIAL_ORDER_COLUMNS, LOGO_IMAGE} from '../../../constants/constants';
+import {GeneratePdfService} from '../../../services/generate-pdf/generate-pdf.service';
+
+
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export interface Tile {
   field: string;
@@ -26,42 +35,35 @@ export interface Tile {
 })
 export class OrderConfirmationComponent implements OnInit {
   @ViewChild(MatTable, {static: false}) table: MatTable<any>;
-  form: FormGroup;
   orderItem = new OrderItem();
-  purchaseOrder: PurchaseOrder;
+  purchaseOrderHref: PurchaseOrder;
   monogram: Monogram;
   isOrderSubmitted = false;
   @Output() orderSubmitted = new EventEmitter<boolean>();
-  tiles: Tile[];
   placement: string;
   customer: Customer;
-  monogramList: Monogram[] = [];
-  dataSource = new MatTableDataSource<Monogram>();
+  monogramDataSource = new MatTableDataSource<Monogram>();
+  specialOrderDataSource = new MatTableDataSource<SpecialOrder>();
   listOfMonograms: any[];
-
-  displayColumns = [
-    'itemName',
-    'monogram',
-    'font',
-    'threadColor',
-    'placement',
-    'designNotes'];
+  listOfSpecialOrders: any[];
+  purchaseOrder: any;
+  displayMonogramColumns = DISPLAY_MONOGRAM_COLUMNS;
+  displaySpecialOrderColumns = DISPLAY_SPECIAL_ORDER_COLUMNS;
 
   constructor(private customerService: CustomerService,
               private monogramService: MonogramService,
               private purchaseOrderService: PurchaseOrderService,
               private orderItemService: OrderItemService,
               private formStateService: FormStateService,
-              private formBuilder: FormBuilder
+              private formBuilder: FormBuilder,
+              private generatePdfService: GeneratePdfService
   ) {
-    this.form = this.formBuilder.group({
-      signature: ['', Validators.required]
-    });
   }
 
   ngOnInit() {
     this.formStateService.getState().subscribe(state => {
-      this.purchaseOrder = state.purchaseOrder._links.purchaseOrder.href;
+      this.purchaseOrder = state.purchaseOrder;
+      this.purchaseOrderHref = state.purchaseOrder._links.purchaseOrder.href;
       this.customerService.getCustomer(state.purchaseOrder._links.customer.href).subscribe(customer => {
         this.customer = customer;
       });
@@ -69,28 +71,51 @@ export class OrderConfirmationComponent implements OnInit {
 
     this.formStateService.getListOfMonogramsState().subscribe(listOfMonogram => {
       this.listOfMonograms = listOfMonogram;
-      console.log('monograms', this.listOfMonograms);
-      this.dataSource.data = this.listOfMonograms;
+      this.monogramDataSource.data = this.listOfMonograms;
+    });
+
+    this.formStateService.getListOfSpecialOrderState().subscribe(listOfSpecialOrder => {
+      this.listOfSpecialOrders = listOfSpecialOrder;
+      this.specialOrderDataSource.data = this.listOfSpecialOrders;
     });
 
   }
 
-  get signature() {
-    return this.form.get('signature');
+  submit() {
+    if (this.listOfMonograms.length > 0) {
+      this.saveMonograms();
+    }
+    if (this.listOfSpecialOrders.length > 0) {
+      this.saveSpecialOrders();
+    }
   }
 
-  submit() {
-    console.log('submit datasource: ', this.listOfMonograms);
+  private saveMonograms() {
     for (const monogram of this.listOfMonograms) {
-      this.orderItem.purchaseOrder = this.purchaseOrder;
+      this.orderItem.purchaseOrder = this.purchaseOrderHref;
       this.orderItem.monogram = monogram._links.monogram.href;
-      this.orderItem.signature = this.form.get('signature').value;
-      console.log('orderItem', this.orderItem);
+      this.orderItem.status = 'In-Progress';
       this.orderItemService.createOrderItem(this.orderItem).subscribe(result => {
         this.orderItem = result;
         this.orderSubmitted.emit(this.isOrderSubmitted = true);
-        this.signature.disable();
       });
     }
+  }
+
+  private saveSpecialOrders() {
+    for (const specialOrders of this.listOfSpecialOrders) {
+      this.orderItem.purchaseOrder = this.purchaseOrderHref;
+      this.orderItem.monogram = null;
+      this.orderItem.specialOrder = specialOrders._links.specialOrder.href;
+      this.orderItem.status = 'In-Progress';
+      this.orderItemService.createOrderItem(this.orderItem).subscribe(result => {
+        this.orderItem = result;
+        this.orderSubmitted.emit(this.isOrderSubmitted = true);
+      });
+    }
+  }
+
+  createPDF() {
+    this.generatePdfService.createPDF(this.customer, this.purchaseOrder, this.monogramDataSource.data, this.specialOrderDataSource.data);
   }
 }

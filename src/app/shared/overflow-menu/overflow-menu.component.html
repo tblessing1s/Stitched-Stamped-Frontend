@@ -1,0 +1,13 @@
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="handleFinishOrderClick()">
+    <mat-icon>input</mat-icon>
+    <span>Finish Order</span>
+  </button>
+  <button mat-menu-item (click)="handleGeneratePdfClick()">
+    <mat-icon>picture_as_pdf</mat-icon>
+    <span>Generate PDF</span>
+  </button>
+</mat-menu>

@@ -1,0 +1,39 @@
+<mat-card>
+  <mat-card-title> Monogram </mat-card-title>
+  <div class="columns">
+    <div class="column" *ngIf="order">
+      <p><b>Order Id:</b> {{order.orderId}}</p>
+      <p><b>Customer:</b> {{order.customer}}</p>
+    </div>
+    <div class="column">
+      <div *ngIf="!doEdit">
+        <div>
+          <div>
+            <p><b>Item: </b>{{existingMonogram.itemName}}</p>
+          </div>
+          <div>
+            <p><b>Font: </b>{{existingMonogram.font === 'Other' ? existingMonogram.otherFont : existingMonogram.font}}
+            </p>
+          </div>
+          <div>
+            <p><b>Thread Color: </b>{{existingMonogram.threadColor}}</p>
+          </div>
+          <div>
+            <p>
+              <b>Placement: </b>{{existingMonogram.placement === 'Other' ? existingMonogram.otherPlacement : existingMonogram.placement}}
+            </p>
+          </div>
+          <div>
+            <p><b>Monogram: </b>{{existingMonogram.monogram}}</p>
+          </div>
+          <div>
+            <p *ngIf="existingMonogram.designNotes"><b>Design Notes: </b>{{existingMonogram.designNotes}}</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="doEdit">
+        <app-edit-monogram [existingMonogram]="this.existingMonogram" (doEdit)="this.doEdit = $event"></app-edit-monogram>
+      </div>
+    </div>
+  </div>
+</mat-card>

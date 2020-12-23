@@ -1,52 +1,74 @@
 <div>
   <h3 *ngIf="this.customer">Customer: {{this.customer.firstName}} {{this.customer.lastName}}</h3>
 
-  <mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="itemName">
-      <mat-header-cell *matHeaderCellDef>Item</mat-header-cell>
-      <mat-cell *matCellDef="let item">{{item.itemName}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="monogram">
-      <mat-header-cell *matHeaderCellDef>Monogram</mat-header-cell>
-      <mat-cell *matCellDef="let item">{{item.monogram}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="font">
-      <mat-header-cell *matHeaderCellDef>Font</mat-header-cell>
-      <mat-cell *matCellDef="let item">{{item.font === 'Other' ? item.otherFont : item.font}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="threadColor">
-      <mat-header-cell *matHeaderCellDef>Thread Color</mat-header-cell>
-      <mat-cell *matCellDef="let item">{{item.threadColor}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="placement">
-      <mat-header-cell *matHeaderCellDef>Placement</mat-header-cell>
-      <mat-cell *matCellDef="let item">{{item.placement === 'Other' ? item.otherPlacement : item.placement}}</mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="designNotes">
-      <mat-header-cell *matHeaderCellDef>Design Notes</mat-header-cell>
-      <mat-cell *matCellDef="let item">{{item.designNotes}}</mat-cell>
-    </ng-container>
+  <div *ngIf="listOfMonograms.length > 0">
+    <h3>Monograms</h3>
+    <hr>
+    <mat-table [dataSource]="monogramDataSource">
+      <ng-container matColumnDef="itemName">
+        <mat-header-cell *matHeaderCellDef>Item</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.itemName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="monogram">
+        <mat-header-cell *matHeaderCellDef>Monogram</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.monogram}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="font">
+        <mat-header-cell *matHeaderCellDef>Font</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.font === 'Other' ? item.otherFont : item.font}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="threadColor">
+        <mat-header-cell *matHeaderCellDef>Thread Color</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.threadColor}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="placement">
+        <mat-header-cell *matHeaderCellDef>Placement</mat-header-cell>
+        <mat-cell
+          *matCellDef="let item">{{item.placement === 'Other' ? item.otherPlacement : item.placement}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="designNotes">
+        <mat-header-cell *matHeaderCellDef>Design Notes</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.designNotes}}</mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
-  </mat-table>
-
-  <div style="display: flex; justify-content: center">
-    <mat-card style="margin-top: 25px; width: 25%">
-      <mat-card-header style="margin-bottom: 5px; justify-content: center">Terms & Conditions</mat-card-header>
-      <mat-card-subtitle>By entering your name below, you are agreeing that the information above is correct and item
-        custom item or items is non-refundable.
-      </mat-card-subtitle>
-      <div style="display: flex; justify-content: center">
-      <mat-form-field appearance="outline" [formGroup]="form">
-        <mat-hint>Customer Signature</mat-hint>
-        <input matInput formControlName="signature" class="signature">
-      </mat-form-field>
-      </div>
-    </mat-card>
+      <mat-header-row *matHeaderRowDef="displayMonogramColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayMonogramColumns;"></mat-row>
+    </mat-table>
   </div>
 
-  <button mat-raised-button matStepperNext color="primary" (click)="submit()" [disabled]="isOrderSubmitted || this.signature.invalid">
+  <div *ngIf="listOfSpecialOrders.length > 0">
+    <h3>Special Orders</h3>
+    <hr>
+    <mat-table [dataSource]="specialOrderDataSource">
+      <ng-container matColumnDef="itemName">
+        <mat-header-cell *matHeaderCellDef>Item</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.itemName}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="brand">
+        <mat-header-cell *matHeaderCellDef>Brand</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.brand}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="size">
+        <mat-header-cell *matHeaderCellDef>Font</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.size}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="itemColor">
+        <mat-header-cell *matHeaderCellDef>Item Color</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.itemColor}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="designNotes">
+        <mat-header-cell *matHeaderCellDef>Design Notes</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.designNotes}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displaySpecialOrderColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displaySpecialOrderColumns;"></mat-row>
+    </mat-table>
+  </div>
+
+  <button mat-stroked-button color="primary" (click)="createPDF()">Print Order</button>
+  <button mat-raised-button matStepperNext color="primary" (click)="submit()"
+          [disabled]="isOrderSubmitted">
     Submit
   </button>
 </div>

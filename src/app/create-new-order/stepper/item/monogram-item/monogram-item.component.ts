@@ -10,7 +10,6 @@ import {ErrorStateMatcher, MatDialog} from '@angular/material';
 import {MonogramOptions} from '../../../../models/monogram-options.enum';
 import {MonogramProperties} from '../../../../models/monogram-properties.enum';
 import {MyErrorStateMatcher} from '../../../../shared/error-state-matcher/MyErrorStateMatcher';
-import {tap} from 'rxjs/operators';
 import {WarningDialogComponent} from '../../../../shared/warning-dialog/warning-dialog.component';
 
 export class InvalidOtherOptionValidatorMatcher implements ErrorStateMatcher {
@@ -209,8 +208,9 @@ export class MonogramItemComponent implements OnInit {
     this.saved = false;
   }
 
-  deleteMonogram(monogram: Monogram, index: number) {
+  deleteMonogram(monogram: Monogram, index: number, $event: MouseEvent) {
     this.saved = false;
+    $event.stopPropagation();
     if (monogram.id) {
       const dialogRef = this.matDialog.open(WarningDialogComponent);
       dialogRef.afterClosed().subscribe(result => {

@@ -14,6 +14,14 @@ export class HttpClientWrapperService {
     return this.http.post<T>(environment.backend.url + url, body);
   }
 
+  postById<T>(url: string): Observable<T> {
+    return this.http.post<T>(environment.backend.url + url, null);
+  }
+
+  postSMS<T>(body: T, url: string): Observable<any> {
+    return this.http.post<T>(environment.webSocketCallback.url + url, body);
+  }
+
   get<T>(url: string): Observable<T> {
     return this.http.get<T>(environment.backend.url + url);
   }

@@ -1,4 +1,3 @@
-
 <!--If Customer does not exist create one-->
 <div [formGroup]="form">
   <h1 mat-dialog-title>Create New Customer</h1>
@@ -25,7 +24,7 @@
     </mat-error>
   </mat-form-field>
   <div>
-    <button mat-raised-button color="primary" (click)="save()">Create Customer</button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="this.form.invalid">Create Customer</button>
     <button mat-raised-button color="accent" (click)="isNewCustomer.emit(false)">Go Back</button>
   </div>
 </div>

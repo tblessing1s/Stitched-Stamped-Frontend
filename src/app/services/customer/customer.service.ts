@@ -26,6 +26,10 @@ export class CustomerService {
   getCustomer(href: any): Observable<any> {
     return this.httpWrapper.getHal(href);
   }
+
+  getCustomerByPurchaseOrderId(purchaseOrderId: number): Observable<Customer> {
+    return this.httpWrapper.get<Customer>(this.customerEndpoint + `/purchaseOrder/${purchaseOrderId}`);
+  }
 }
 
 interface GetCustomersResponse {

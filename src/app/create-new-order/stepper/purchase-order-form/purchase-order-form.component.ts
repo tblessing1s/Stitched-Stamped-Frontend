@@ -17,10 +17,11 @@ import {MyErrorStateMatcher} from '../../../shared/error-state-matcher/MyErrorSt
 export function RequireMatch(control: AbstractControl) {
   const selection: any = control.value;
   if (typeof selection === 'string') {
-    return { incorrect: true };
+    return {incorrect: true};
   }
   return null;
 }
+
 @Component({
   selector: 'app-purchase-order-form',
   templateUrl: './purchase-order-form.component.html',
@@ -68,12 +69,10 @@ export class PurchaseOrderFormComponent implements OnInit {
   }
 
   createOrder() {
-
-    this.formStateService.getState().subscribe(state => {
-    });
+    this.purchaseOrder.status = 'In-Progress';
     this.orderService.createNewOrder(this.purchaseOrder).subscribe((result) => {
-      this.formStateService.update(result, OrderItemProperties.PURCHASEORDER);
-      this.purchaseOrder.id = result.id;
+        this.formStateService.update(result, OrderItemProperties.PURCHASEORDER);
+        this.purchaseOrder.id = result.id;
       }
     );
 

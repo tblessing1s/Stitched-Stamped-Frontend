@@ -1,0 +1,14 @@
+<div>
+  <app-monogram-display *ngIf="this.isOrderTypeMonogram() && this.existingOrderToDisplay" [order]="this.orderClicked" [existingMonogram]="this.existingOrderToDisplay"></app-monogram-display>
+  <app-special-order-display *ngIf="this.isOrderTypeSpecialOrder() && this.existingOrderToDisplay" [order]="this.orderClicked" [existingSpecialOrder]="this.existingOrderToDisplay"></app-special-order-display>
+  <div class="columns is-vcentered is-gapless container">
+    <div class="column is-2">Orders In-Progress</div>
+    <div class="column is-offset-8 new-order-button">
+      <button mat-raised-button color="primary" (click)="handleCreateNewOrder()">
+        <mat-icon [inline]="true">add</mat-icon>
+        <span> Create Order</span>
+      </button>
+    </div>
+  </div>
+  <app-purchase-order-table></app-purchase-order-table>
+</div>

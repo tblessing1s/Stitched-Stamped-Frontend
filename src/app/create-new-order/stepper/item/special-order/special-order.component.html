@@ -1,0 +1,71 @@
+<mat-expansion-panel [expanded]="this.saved">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Special Order
+    </mat-panel-title>
+    <mat-panel-description class="columns">
+      <div class="column is-6">
+        Item: <b>{{this.itemName.value ? this.itemName.value : 'No Item Entered'}}</b>
+        <span style="margin-left: 15px">Brand: <b>{{this.brand.value ? this.brand.value : 'No Brand Entered'}}</b></span>
+      </div>
+      <div class="column is-offset-5">
+        <button mat-icon-button (click)="this.deleteSpecialOrder(this.specialOrderToSave, this.monogramIndex, $event)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-panel-description>
+    <ng-template matExpansionPanelContent>
+      <form [formGroup]="specialOrderForm">
+        <mat-grid-list cols="4" rowHeight="50px">
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <mat-form-field appearance="outline" style="width: 75%">
+              <mat-label>What item needs to be personalized?</mat-label>
+              <input matInput formControlName="itemName" [errorStateMatcher]="errorMatcher">
+              <mat-error *ngIf="this.itemName.hasError('required')">Item is required</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!--    Item-->
+
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <mat-form-field appearance="outline" style="width: 75%">
+              <mat-label>Enter a Brand of the Item</mat-label>
+              <input matInput formControlName="brand" placeholder="e.g. Charles River" [errorStateMatcher]="errorMatcher">
+              <mat-error *ngIf="this.brand.hasError('required')">Brand is required</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!--    Brand-->
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <mat-form-field appearance="outline" style="width: 75%">
+              <mat-label>Enter a Size of the Item</mat-label>
+              <input matInput formControlName="size" placeholder="e.g. Large" [errorStateMatcher]="errorMatcher">
+              <mat-error *ngIf="this.size.hasError('required')">Size is required</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!--    Size-->
+          <mat-grid-tile [colspan]="2" [rowspan]="2">
+            <mat-form-field appearance="outline" style="width: 75%">
+              <mat-label>Enter the Item's Color</mat-label>
+              <input matInput formControlName="itemColor" placeholder="e.g. Blue" [errorStateMatcher]="errorMatcher">
+              <mat-error *ngIf="this.itemColor.hasError('required')">Item color is required</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+<!--          Color of Item-->
+          <mat-grid-tile [colspan]="4" [rowspan]="2">
+            <mat-form-field appearance="outline" style="width: 75%; margin-top: 5px">
+              <mat-label>Design Notes</mat-label>
+              <textarea matInput formControlName="designNotes"></textarea>
+            </mat-form-field>
+          </mat-grid-tile>
+          <!--    Design Notes-->
+          <mat-grid-tile colspan="2">
+            <button mat-raised-button color="primary" (click)="save()"
+                    [disabled]="specialOrderForm.invalid || orderSubmitted">Create Special Order
+            </button>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </form>
+    </ng-template>
+  </mat-expansion-panel-header>
+</mat-expansion-panel>
+
+

@@ -8,7 +8,7 @@
         </app-purchase-order-form>
       </form>
     </mat-step>
-    <mat-step [stepControl]="step2.form" [editable]="!orderSubmitted">
+    <mat-step [stepControl]="setStepControl(step2)" [editable]="!orderSubmitted">
       <ng-template matStepLabel>Item Customization</ng-template>
       <app-item #step2 [orderSubmitted]="orderSubmitted">
       </app-item>
@@ -16,7 +16,9 @@
     <mat-step>
       <form>
         <ng-template matStepLabel>Order Review</ng-template>
-        <app-order-confirmation *ngIf="(orderItem.purchaseOrder && orderItem.monogram) && (this.monogramList.length >= 1)"
+        <app-order-confirmation *ngIf="(orderItem.purchaseOrder && (orderItem.monogram || orderItem.specialOrder)) &&
+        ((this.monogramList.length >= 1)
+        || (this.specialOrderList.length >= 1))"
                                 (orderSubmitted)="orderSubmitted = $event"
         >
         </app-order-confirmation>
@@ -26,8 +28,7 @@
       <ng-template matStepLabel>Done</ng-template>
       <p>You are now done.</p>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button (click)="this.handleGoHomeClick()">Go Home</button>
       </div>
     </mat-step>
   </mat-horizontal-stepper>

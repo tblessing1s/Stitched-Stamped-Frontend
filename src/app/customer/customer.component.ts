@@ -1,6 +1,6 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {Customer} from '../models/customer';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatDialogRef, MatSnackBar} from '@angular/material';
 import {CustomerService} from '../services/customer/customer.service';
 import {Router} from '@angular/router';
@@ -30,15 +30,14 @@ export class CustomerComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      firstName: new FormControl(),
-      lastName: new FormControl(),
-      email: new FormControl(),
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      email: new FormControl('', Validators.required),
       phone: new FormControl(null, [
         Validators.required,
         Validators.pattern(this.validation.phoneValidation)
       ])
     });
-
   }
 
   save(): void {
@@ -54,7 +53,6 @@ export class CustomerComponent implements OnInit {
       () => this.snackBar.open(`Customer was saved`, 'Close')
     );
     this.dialogRef.close();
-
   }
 
 }

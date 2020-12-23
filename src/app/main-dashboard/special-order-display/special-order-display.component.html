@@ -1,0 +1,36 @@
+<mat-card>
+  <mat-card-title> Special Order </mat-card-title>
+  <div class="columns">
+    <div class="column" *ngIf="order">
+      <p><b>Order Id:</b> {{order.orderId}}</p>
+      <p><b>Customer:</b> {{order.customer}}</p>
+    </div>
+    <div class="column">
+      <div *ngIf="!doEdit">
+        <div>
+          <div>
+            <p><b>Item: </b>{{existingSpecialOrder.itemName}}</p>
+          </div>
+          <div>
+            <p><b>Brand: </b>{{existingSpecialOrder.brand}}
+            </p>
+          </div>
+          <div>
+            <p><b>Size: </b>{{existingSpecialOrder.size}}</p>
+          </div>
+          <div>
+            <p>
+              <b>Item Color: </b>{{existingSpecialOrder.itemColor}}
+            </p>
+          </div>
+          <div>
+            <p *ngIf="existingSpecialOrder.designNotes"><b>Design Notes: </b>{{existingSpecialOrder.designNotes}}</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="doEdit">
+        <app-edit-special-order [existingSpecialOrder]="this.existingSpecialOrder" (doEdit)="this.doEdit = $event"></app-edit-special-order>
+      </div>
+    </div>
+  </div>
+</mat-card>

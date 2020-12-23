@@ -23,10 +23,14 @@
     "@angular/router": "~8.2.0",
     "bulma": "^0.9.1",
     "hammerjs": "^2.0.8",
+    "jspdf": "^2.2.0",
     "libphonenumber-js": "^1.7.48",
+    "moment": "^2.29.1",
+    "pdfmake": "^0.1.68",
     "rxjs": "~6.4.0",
     "signature_pad": "^3.0.0-beta.3",
     "tslib": "^1.10.0",
+    "twilio-cli": "^2.11.0",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {

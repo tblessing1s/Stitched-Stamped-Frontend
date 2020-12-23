@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  backend: { url: 'http://localhost:8080/'}
+  backend: { url: 'http://localhost:8080/'},
+  webSocketCallback: { url: 'http://localhost:8081/'}
 };
 
 /*
