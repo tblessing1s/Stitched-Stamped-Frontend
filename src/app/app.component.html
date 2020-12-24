@@ -4,5 +4,9 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span style="padding-top: 10px; margin-left: 15px"><img src="assets/images/logo%20(1).jpeg" width="75"></span>
+  <span>
+  <button mat-button *ngIf="!isAuthenticated" (click)="login()"> Login </button>
+  <button mat-button *ngIf="isAuthenticated" (click)="logout()"> Logout </button>
+</span>
 </mat-toolbar>
 <router-outlet></router-outlet>

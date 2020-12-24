@@ -3,15 +3,21 @@ import {RouterModule, Routes} from '@angular/router';
 import {StepperComponent} from './create-new-order/stepper/stepper.component';
 import {MainDashboardComponent} from './main-dashboard/main-dashboard.component';
 import {AppPath} from './models/app-path.enum';
+import {OktaAuthGuard, OktaCallbackComponent} from '@okta/okta-angular';
 
 const routes: Routes = [
   {
     path: AppPath.RootLink,
-    component: MainDashboardComponent
+    component: MainDashboardComponent,
+    canActivate: [OktaAuthGuard]
   },
   {
     path: AppPath.CreateNewOrder,
-    component: StepperComponent
+    component: StepperComponent,
+    canActivate: [OktaAuthGuard]
+  },
+  {path: AppPath.OktaLoginCallback,
+    component: OktaCallbackComponent
   }
 ];
 
@@ -22,4 +28,5 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}
